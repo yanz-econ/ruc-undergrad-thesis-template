@@ -1,0 +1,91 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ructhesis}[2026/04/14 RUC Undergraduate Thesis Template]
+
+% ==========================================
+% 1. 基础功能与排版宏包
+% ==========================================
+\RequirePackage{amsmath, amssymb}            % 数学公式支持
+\RequirePackage{graphicx, float, subcaption} % 图片与浮动体控制
+\RequirePackage{booktabs, multirow, array}   % 三线表与复杂表格
+\RequirePackage{threeparttable}              % 带尾注的表格
+\RequirePackage{geometry}                    % 页面边距布局
+\RequirePackage{fancyhdr}                    % 页眉页脚控制
+\RequirePackage{setspace}                    % 行距控制
+\RequirePackage{titletoc, titlesec}          % 目录与多级标题自定义
+\RequirePackage{caption}                     % 图表标题自定义
+\RequirePackage{enumitem, enumerate}         % 列表环境
+\RequirePackage{pifont}                      % 特殊符号 (用于脚注)
+\RequirePackage[perpage,symbol*]{footmisc}   % 脚注控制
+\RequirePackage{appendix}                    % 附录支持
+\RequirePackage{xcolor}                      % 颜色支持
+\RequirePackage{tikz}                        % 绘图支持
+\RequirePackage{hyperref}                    % 超链接
+
+% ==========================================
+% 2. 页面与字体全局设置 (适配 XeLaTeX)
+% ==========================================
+\RequirePackage{fontspec}
+\RequirePackage{mathptmx}
+\RequirePackage[T1]{fontenc}
+
+% 页面边距：依据教务处指导手册
+\geometry{a4paper, left=2cm, right=1.5cm, top=2cm, bottom=2cm}
+
+% 超链接设为纯黑打印格式
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black
+}
+
+% 图表标题间距与字体设定
+\captionsetup{font={small}, labelfont={bf}} 
+\captionsetup[table]{skip=3pt}
+\captionsetup[figure]{skip=3pt}
+
+% 脚注设定：每页更新的圆形编号
+\DefineFNsymbols{circled}{{\ding{192}}{\ding{193}}{\ding{194}}{\ding{195}}{\ding{196}}{\ding{197}}{\ding{198}}{\ding{199}}{\ding{200}}{\ding{201}}}
+\setfnsymbol{circled}
+
+% ==========================================
+% 3. 标题与目录格式重定义
+% ==========================================
+% 目录引线与字体
+\titlecontents{section}[2.3em]{\heiti}{\contentslabel{2.3em}}{\hspace*{-2.3em}}{\titlerule*[1pc]{.}\contentspage}
+
+% 各级标题格式：黑体、加粗、单倍行距、段前段后1行
+\titleformat{\section}{\centering \zihao{3} \heiti \bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\flushleft \zihao{4} \heiti \bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\flushleft \zihao{-4} \heiti \bfseries}{\thesubsubsection}{1em}{}
+
+% ==========================================
+% 4. 页眉页脚样式初始化
+% ==========================================
+\pagestyle{fancy}
+\fancyhf{} % 清空默认
+% 居中放置校徽（确保当前目录下有 head.png）
+\chead{\includegraphics[width=4.13cm, height=0.98cm]{head.png}}
+
+% ==========================================
+% 5. 摘要环境与辅助命令
+% ==========================================
+% 中文摘要
+\renewcommand{\abstractname}{\textbf{\Large \heiti 摘要}}
+\renewenvironment{abstract}{%
+    \par\small
+    \noindent\mbox{}\hfill{\bfseries \abstractname}\hfill\mbox{}\par
+    \vskip 2.5ex}{\par\vskip 2.5ex} 
+
+% 英文摘要
+\newcommand{\enabstractname}{\textbf{\Large Abstract}}
+\newenvironment{enabstract}{%
+    \par\small
+    \noindent\mbox{}\hfill{\bfseries \enabstractname}\hfill\mbox{}\par
+    \vskip 2.5ex}{\par\vskip 2.5ex} 
+
+% 封面下划线排版工具
+\newcommand\dunderline[3][-1pt]{{%
+  \setbox0=\hbox{#3}
+  \ooalign{\copy0\cr\rule[\dimexpr#1-#2\relax]{\wd0}{#2}}}}
+
+\endinput
