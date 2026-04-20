@@ -1,12 +1,12 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{ructhesis}[2026/04/14 RUC Undergraduate Thesis Template]
+\ProvidesPackage{ructhesis}[2026/04/20 RUC Undergraduate Thesis Template]
 
 % ==========================================
 % 1. 基础功能与排版宏包
 % ==========================================
 \RequirePackage{amsmath, amssymb}            % 数学公式支持
 \RequirePackage{graphicx, float, subcaption} % 图片与浮动体控制
-\RequirePackage{booktabs, multirow, array}   % 三线表与复杂表格
+\RequirePackage{booktabs, multirow, array, tabularx}   % 三线表与复杂表格
 \RequirePackage{threeparttable}              % 带尾注的表格
 \RequirePackage{geometry}                    % 页面边距布局
 \RequirePackage{fancyhdr}                    % 页眉页脚控制
@@ -19,6 +19,7 @@
 \RequirePackage{appendix}                    % 附录支持
 \RequirePackage{xcolor}                      % 颜色支持
 \RequirePackage{tikz}                        % 绘图支持
+\usetikzlibrary{shapes.geometric, decorations.pathreplacing}
 \RequirePackage{hyperref}                    % 超链接
 
 % ==========================================
@@ -34,8 +35,9 @@
 % 超链接设为纯黑打印格式
 \hypersetup{
     colorlinks=true,
-    linkcolor=black,
-    citecolor=black
+    linkcolor=black,   % 目录、交叉引用等内部链接颜色
+    citecolor=black,   % 参考文献引用颜色
+    urlcolor=black     % 网址链接颜色
 }
 
 % 图表标题间距与字体设定
