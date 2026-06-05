@@ -21,6 +21,8 @@
 \RequirePackage{tikz}                        % 绘图支持
 \usetikzlibrary{shapes.geometric, decorations.pathreplacing}
 \RequirePackage{hyperref}                    % 超链接
+\RequirePackage{etoolbox}                    % 用于提供 \AtBeginEnvironment 钩子命令
+\RequirePackage{adjustbox}
 
 % ==========================================
 % 2. 页面与字体全局设置 (适配 XeLaTeX)
@@ -28,6 +30,37 @@
 \RequirePackage{fontspec}
 \RequirePackage{mathptmx}
 \RequirePackage[T1]{fontenc}
+
+% 1. 强制正文 \textbf 使用宋体伪粗体
+\RequirePackage{xeCJK}
+
+% 1. 开启全角标点模式
+\xeCJKsetup{PunctStyle=quanjiao} 
+
+% 2. 【关键修复】强制让所有中文标点使用规范的字体渲染
+% \setCJKpunctfont{STSong}
+
+\setCJKmainfont{STSong}[
+    BoldFont={STSong},
+    BoldFeatures={FakeBold=5},
+    ItalicFont={Kaiti SC}
+]
+
+% 2. 设置标题与黑体族 (黑体)
+% 这样设置后，当你使用 \heiti \bfseries 时，系统会自动调用 Heiti SC Medium
+\setCJKsansfont{Heiti SC}[
+    BoldFont={Heiti SC Medium} 
+]
+
+% 如果你觉得 Medium 还不够粗，想要“更黑”的效果，也可以用伪粗体：
+% \setCJKsansfont{Heiti SC}[
+%     BoldFont={Heiti SC},
+%     BoldFeatures={FakeBold=2.5}
+% ]
+
+% 3. 这里的设置是为了兼容 ctex 原生的 \heiti 命令
+\setCJKfamilyfont{zhhei}{Heiti SC}[BoldFont={Heiti SC Medium}]
+\renewcommand*{\heiti}{\CJKfamily{zhhei}}
 
 % 页面边距：依据教务处指导手册
 \geometry{a4paper, left=2cm, right=1.5cm, top=2cm, bottom=2cm}
@@ -49,6 +82,23 @@
 \DefineFNsymbols{circled}{{\ding{192}}{\ding{193}}{\ding{194}}{\ding{195}}{\ding{196}}{\ding{197}}{\ding{198}}{\ding{199}}{\ding{200}}{\ding{201}}}
 \setfnsymbol{circled}
 
+% 设置图表标题分隔符
+% 1. 声明一个名叫 zhcolon 的自定义分隔符，内容为全角冒号
+\DeclareCaptionLabelSeparator{zhcolon}{：} 
+
+% 2. 在全局设置中强行应用这个分隔符
+\captionsetup{
+    font={small}, 
+    labelfont={bf},
+    labelsep=zhcolon % 全局强制使用全角冒号
+} 
+\captionsetup[table]{skip=3pt}
+\captionsetup[figure]{skip=3pt}
+
+% 表格行距调整：1.25倍行距
+\renewcommand{\arraystretch}{1.25}
+\setlength{\heavyrulewidth}{1.5pt}
+
 % ==========================================
 % 3. 标题与目录格式重定义
 % ==========================================
@@ -65,6 +115,7 @@
 % ==========================================
 \pagestyle{fancy}
 \fancyhf{} % 清空默认
+% \setlength{\headheight}{33pt}
 % 居中放置校徽（确保当前目录下有 head.png）
 \chead{\includegraphics[width=4.13cm, height=0.98cm]{head.png}}
 
@@ -90,4 +141,43 @@
   \setbox0=\hbox{#3}
   \ooalign{\copy0\cr\rule[\dimexpr#1-#2\relax]{\wd0}{#2}}}}
 
+
+% ==========================================
+% 6. 附录自动化增强模块
+% ==========================================
+\RequirePackage{etoolbox}
+
+% 当进入 appendices 环境时，自动执行以下初始化
+\AtBeginEnvironment{appendices}{
+    % 1. 自动插入一个居中的“附录”大标题（不带 A/B 编号）
+    % \section* 会继承你 sty 中定义的居中、三号、黑体等样式，但不计入编号
+    \section*{附录}
+    
+    % 2. 手动将其加入目录（因为 \section* 默认不进目录）
+    % \addcontentsline{toc}{section}{附录}
+    
+    % 3. 定义随后 \section 的编号显示方式：使 \thesection 仅显示 A, B, C...
+    % 这样做是为了让图表编号 \thesection.\arabic{table} 显示为 A.1 而不是 “附录 A.1”
+    \renewcommand{\thesection}{\Alph{section}}
+    
+    % 4. 重新定义此环境下 \section 的标题样式，使其显示为 “附录 A  XXXX”
+    % 格式（居中、字号）依然保持与你的原 sty 一致
+    \titleformat{\section}
+        {\flushleft \zihao{3} \heiti \bfseries}
+        {附录 \thesection}  % 在这里硬编码“附录”两个字
+        {1em}
+        {}
+        
+    % 5. 图表重命名与编号逻辑（附图 A.1）
+    \renewcommand{\figurename}{附图}
+    \renewcommand{\tablename}{附表}
+    \renewcommand{\thefigure}{\thesection.\arabic{figure}}
+    \renewcommand{\thetable}{\thesection.\arabic{table}}
+    
+    % 6. 计数器绑定：每增加一个 \section，图表序号清零
+    \makeatletter
+    \@addtoreset{figure}{section}
+    \@addtoreset{table}{section}
+    \makeatother
+}
 \endinput

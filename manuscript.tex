@@ -17,7 +17,7 @@
 \thispagestyle{fancy}
 \cfoot{}
   \begin{flushright}
-    \heiti \textbf{论文编码：RUC-BK-050101-2018000000}
+    \heiti \textbf{论文编码：RUC-BK-020104T-XXXXXXXXXX}
   \end{flushright}
 
   \vspace*{2em}
@@ -57,16 +57,18 @@
   \end{spacing}
 \end{titlepage}
 
+\input{statement}
+
 % ==========================================
 % 摘要页
 % ==========================================
 \newpage
 \begin{abstract}
-\begin{onehalfspace}
-此处撰写中文摘要。重点阐述研究背景、因果推断方法、核心政策评估结果以及空间溢出效应的结论。
+\begin{spacing}{1.5}
+此处撰写中文摘要。重点阐述研究背景、因果推断方法、核心政策评估结果以及结论。
 \\[12pt]
 \textbf{\heiti 关键词：}政策评估 \quad 空间计量 \quad 正外部性
-\end{onehalfspace}
+\end{spacing}
 \end{abstract}
 
 \setcounter{page}{1}
@@ -76,7 +78,7 @@
 
 \begin{enabstract}
 \begin{doublespace}
-This is the abstract. It summarizes the background, methodology (e.g., causal inference, spatial data analysis), and main results concerning hydrological externalities.
+This is the abstract. It summarizes the background, methodology (e.g., causal inference, spatial data analysis), and main results.
 \\[12pt]
 \textbf{Keywords：}Policy Evaluation \quad Spatial Econometrics \quad Positive Externalities
 \end{doublespace}
@@ -105,7 +107,7 @@ This is the abstract. It summarizes the background, methodology (e.g., causal in
 \pagestyle{fancy}
 \cfoot{\zihao{5} 第 \thepage 页}
 
-\begin{spacing}{1.25}
+\begin{spacing}{1.35}
 
 \section{引言}
 在此处输入正文。针对空间数据分析和计量模型的设定\footnote{空间权重矩阵的设定逻辑说明。}，可结合具体的模型展开。
@@ -127,13 +129,24 @@ This is the abstract. It summarizes the background, methodology (e.g., causal in
 
 \newpage
 \addcontentsline{toc}{section}{\heiti 附录}
-\section*{附录}
-\appendix
-补充的计量回归表格、代码说明或数据来源描述。
+
+\begin{appendices}
+
+\section{数据来源}
+数据来源说明。
+
+\newpage
+\section{稳健性检验回归结果}
+稳健性检验的回归结果表格。支持自动编号。
+
+\end{appendices}
 
 \newpage
 \addcontentsline{toc}{section}{\heiti 致谢}
 \section*{致谢}
+
+\begin{spacing}{1.35}
 致谢部分。
+\end{spacing}
 
 \end{document}
